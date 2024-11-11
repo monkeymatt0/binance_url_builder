@@ -1,4 +1,4 @@
-package go_binance_url_builder
+package binance_url_builder
 
 // urls.go will contain the needed urls
 // These urls are the ones needed to be used in the core trading bot

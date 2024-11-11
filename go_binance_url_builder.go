@@ -1,4 +1,4 @@
-package go_binance_url_builder
+package binance_url_builder
 
 import (
 	"net/url"
