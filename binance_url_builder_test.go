@@ -1,17 +1,21 @@
 package binance_url_builder
 
-import "testing"
+import (
+	"testing"
+)
 
 const (
-	testKlines  = "https://testnet.binance.vision/api/v3/klines"
-	testOrder   = "https://testnet.binance.vision/api/v3/order"
-	testAccount = "https://testnet.binance.vision/api/v3/account"
-	testPing    = "https://testnet.binance.vision/api/v3/ping"
+	testKlines           = "https://testnet.binance.vision/api/v3/klines"
+	testKlinesWithParams = "https://testnet.binance.vision/api/v3/klines?interval=5m&limit=1000&symbol=BTCUSDT"
+	testOrder            = "https://testnet.binance.vision/api/v3/order"
+	testAccount          = "https://testnet.binance.vision/api/v3/account"
+	testPing             = "https://testnet.binance.vision/api/v3/ping"
 
-	prodKlines  = "https://api.binance.com/api/v3/klines"
-	prodOrder   = "https://api.binance.com/api/v3/order"
-	prodAccount = "https://api.binance.com/api/v3/account"
-	prodPing    = "https://api.binance.com/api/v3/ping"
+	prodKlines           = "https://api.binance.com/api/v3/klines"
+	prodKlinesWithParams = "https://api.binance.com/api/v3/klines?interval=5m&limit=1000&symbol=BTCUSDT"
+	prodOrder            = "https://api.binance.com/api/v3/order"
+	prodAccount          = "https://api.binance.com/api/v3/account"
+	prodPing             = "https://api.binance.com/api/v3/ping"
 )
 
 func TestNew(t *testing.T) {
@@ -30,10 +34,21 @@ func TestUrls(t *testing.T) {
 	bub := &BinanceURLBuilder{}
 	// Testnet
 	bub.New(true)
-	pass := bub.Klines().String() == testKlines
+	params := make(map[string]string)
+	pass := bub.Klines(params).String() == testKlines
 	if !pass {
 		t.Errorf("[TEST] Error with klines endpoint building")
 	}
+	params["symbol"] = "BTCUSDT"
+	params["interval"] = "5m"
+	params["limit"] = "1000"
+	pass = bub.Klines(params).String() == testKlinesWithParams
+	if !pass {
+		t.Errorf("[TEST] Error with klines endpoint building")
+	}
+	delete(params, "symbol")
+	delete(params, "interval")
+	delete(params, "limit")
 	pass = bub.Order().String() == testOrder
 	if !pass {
 		t.Errorf("[TEST] Error with order endpoint building")
@@ -48,10 +63,20 @@ func TestUrls(t *testing.T) {
 	}
 	// Production
 	bub.New(false)
-	pass = bub.Klines().String() == prodKlines
+	pass = bub.Klines(params).String() == prodKlines
 	if !pass {
 		t.Errorf("[PROD] Error with klines endpoint building")
 	}
+	params["symbol"] = "BTCUSDT"
+	params["interval"] = "5m"
+	params["limit"] = "1000"
+	pass = bub.Klines(params).String() == prodKlinesWithParams
+	if !pass {
+		t.Errorf("[TEST] Error with klines endpoint building")
+	}
+	delete(params, "symbol")
+	delete(params, "interval")
+	delete(params, "limit")
 	pass = bub.Order().String() == prodOrder
 	if !pass {
 		t.Errorf("[PROD] Error with order endpoint building")
