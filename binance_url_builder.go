@@ -1,12 +1,21 @@
 package binance_url_builder
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 	"net/url"
 	"strings"
 )
 
 type BinanceURLBuilder struct {
 	url.URL
+}
+
+func (bub *BinanceURLBuilder) sign(data, secret string) string {
+	h := hmac.New(sha256.New, []byte(secret))
+	h.Write([]byte(data))
+	return hex.EncodeToString(h.Sum(nil))
 }
 
 func (bub *BinanceURLBuilder) New(test bool) {
@@ -41,7 +50,7 @@ func (bub *BinanceURLBuilder) Klines(params map[string]string) *BinanceURLBuilde
 // @todo :
 // Add params here to place an order properly
 // Add param to asses if we need to delete the order
-func (bub *BinanceURLBuilder) Order(params map[string]string) *BinanceURLBuilder {
+func (bub *BinanceURLBuilder) Order(params map[string]string, secret string) *BinanceURLBuilder {
 	bub.clean()
 	bub.Path = strings.Join([]string{
 		string(BASE_PATH),
@@ -52,6 +61,12 @@ func (bub *BinanceURLBuilder) Order(params map[string]string) *BinanceURLBuilder
 	for key, value := range params {
 		query.Set(key, value)
 	}
+	encQuery := query.Encode()
+	if secret != "" {
+		signature := bub.sign(encQuery, secret)
+		query.Set("signature", signature)
+	}
+	bub.RawQuery = query.Encode()
 	return bub
 }
 
