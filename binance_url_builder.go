@@ -38,12 +38,20 @@ func (bub *BinanceURLBuilder) Klines(params map[string]string) *BinanceURLBuilde
 	return bub
 }
 
-func (bub *BinanceURLBuilder) Order() *BinanceURLBuilder {
+// @todo :
+// Add params here to place an order properly
+// Add param to asses if we need to delete the order
+func (bub *BinanceURLBuilder) Order(params map[string]string) *BinanceURLBuilder {
 	bub.clean()
 	bub.Path = strings.Join([]string{
 		string(BASE_PATH),
 		string(ORDER),
 	}, "/")
+	query := bub.Query()
+	// Create the query parameters for the POST
+	for key, value := range params {
+		query.Set(key, value)
+	}
 	return bub
 }
 

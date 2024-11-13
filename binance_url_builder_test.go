@@ -49,7 +49,7 @@ func TestUrls(t *testing.T) {
 	delete(params, "symbol")
 	delete(params, "interval")
 	delete(params, "limit")
-	pass = bub.Order().String() == testOrder
+	pass = bub.Order(params).String() == testOrder
 	if !pass {
 		t.Errorf("[TEST] Error with order endpoint building")
 	}
@@ -77,7 +77,7 @@ func TestUrls(t *testing.T) {
 	delete(params, "symbol")
 	delete(params, "interval")
 	delete(params, "limit")
-	pass = bub.Order().String() == prodOrder
+	pass = bub.Order(params).String() == prodOrder
 	if !pass {
 		t.Errorf("[PROD] Error with order endpoint building")
 	}
