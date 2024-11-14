@@ -57,7 +57,7 @@ func TestUrls(t *testing.T) {
 	if !pass {
 		t.Errorf("[TEST] Error with ping endpoint building")
 	}
-	pass = bub.Account().String() == testAccount
+	pass = bub.Account("").String() == testAccount
 	if !pass {
 		t.Errorf("[TEST] Error with account endpoint building")
 	}
@@ -85,7 +85,7 @@ func TestUrls(t *testing.T) {
 	if !pass {
 		t.Errorf("[PROD] Error with ping endpoint building")
 	}
-	pass = bub.Account().String() == prodAccount
+	pass = bub.Account("").String() == prodAccount
 	if !pass {
 		t.Errorf("[PROD] Error with account endpoint building")
 	}

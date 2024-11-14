@@ -4,8 +4,10 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
+	"fmt"
 	"net/url"
 	"strings"
+	"time"
 )
 
 type BinanceURLBuilder struct {
@@ -70,12 +72,22 @@ func (bub *BinanceURLBuilder) Order(params map[string]string, secret string) *Bi
 	return bub
 }
 
-func (bub *BinanceURLBuilder) Account() *BinanceURLBuilder {
+func (bub *BinanceURLBuilder) Account(secret string) *BinanceURLBuilder {
 	bub.clean()
 	bub.Path = strings.Join([]string{
 		string(BASE_PATH),
 		string(ACCOUNT),
 	}, "/")
+	timestamp := time.Now().UnixNano() / int64(time.Millisecond)
+	query := bub.Query()
+	if secret != "" {
+		query.Set("timestamp", fmt.Sprintf("%d", timestamp))
+		query.Set("omitZeroBalances", "true")
+		encQuery := query.Encode()
+		signature := bub.sign(encQuery, secret)
+		query.Set("signature", signature)
+	}
+	bub.RawQuery = query.Encode()
 	return bub
 }
 
