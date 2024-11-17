@@ -25,8 +25,9 @@ const (
 type BinancePath string
 
 const (
-	KLINES  BinancePath = "klines"
-	ORDER   BinancePath = "order" // This can be used to CREATE, DELETE and CHECK the order
-	PING    BinancePath = "ping"
-	ACCOUNT BinancePath = "account"
+	KLINES     BinancePath = "klines"
+	ORDER      BinancePath = "order" // This can be used to CREATE, DELETE and CHECK the order
+	PING       BinancePath = "ping"
+	ACCOUNT    BinancePath = "account"
+	LISTEN_KEY BinancePath = "userDataStream"
 )

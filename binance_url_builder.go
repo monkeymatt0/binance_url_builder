@@ -34,6 +34,15 @@ func (bub *BinanceURLBuilder) clean() {
 	bub.RawQuery = ""
 }
 
+func (bub *BinanceURLBuilder) ListenKey() *BinanceURLBuilder {
+	bub.clean()
+	bub.Path = strings.Join([]string{
+		string(BASE_PATH),
+		string(LISTEN_KEY),
+	}, "/")
+	return bub
+}
+
 func (bub *BinanceURLBuilder) Klines(params map[string]string) *BinanceURLBuilder {
 	bub.clean()
 	bub.Path = strings.Join([]string{
