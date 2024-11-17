@@ -34,6 +34,20 @@ func (bub *BinanceURLBuilder) clean() {
 	bub.RawQuery = ""
 }
 
+func (bub *BinanceURLBuilder) UserDataStream(listenKey string) string {
+	bub.clean()
+	bub.Scheme = string(WSS)
+	bub.Path = strings.Join([]string{
+		string(WSS_PRODUCTION),
+		string(WSS_BASE_PATH),
+		listenKey,
+	}, "/")
+	defer func() {
+		bub.Scheme = string(HTTPS)
+	}()
+	return bub.String()
+}
+
 func (bub *BinanceURLBuilder) ListenKey() *BinanceURLBuilder {
 	bub.clean()
 	bub.Path = strings.Join([]string{
