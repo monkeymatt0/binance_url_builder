@@ -16,6 +16,7 @@ const (
 	PRODUCTION     BinanceHost = "api.binance.com"
 	TEST           BinanceHost = "testnet.binance.vision"
 	WSS_PRODUCTION BinanceHost = "stream.binance.com:9443"
+	WSS_TEST       BinanceHost = "stream.testnet.binance.vision:9443"
 )
 
 type BinanceBasePath string

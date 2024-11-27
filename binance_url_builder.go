@@ -37,11 +37,19 @@ func (bub *BinanceURLBuilder) clean() {
 func (bub *BinanceURLBuilder) UserDataStream(listenKey string) string {
 	bub.clean()
 	bub.Scheme = string(WSS)
-	bub.Path = strings.Join([]string{
-		string(WSS_PRODUCTION),
-		string(WSS_BASE_PATH),
-		listenKey,
-	}, "/")
+	if bub.Host == string(TEST) {
+		bub.Path = strings.Join([]string{
+			string(WSS_TEST),
+			string(WSS_BASE_PATH),
+			listenKey,
+		}, "/")
+	} else {
+		bub.Path = strings.Join([]string{
+			string(WSS_PRODUCTION),
+			string(WSS_BASE_PATH),
+			listenKey,
+		}, "/")
+	}
 	defer func() {
 		bub.Scheme = string(HTTPS)
 	}()
