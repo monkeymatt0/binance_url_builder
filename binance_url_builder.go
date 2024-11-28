@@ -56,12 +56,21 @@ func (bub *BinanceURLBuilder) UserDataStream(listenKey string) string {
 	return bub.String()
 }
 
-func (bub *BinanceURLBuilder) ListenKey() *BinanceURLBuilder {
+func (bub *BinanceURLBuilder) ListenKey(listenKey *string) *BinanceURLBuilder {
 	bub.clean()
-	bub.Path = strings.Join([]string{
-		string(BASE_PATH),
-		string(LISTEN_KEY),
-	}, "/")
+	if listenKey == nil {
+		bub.Path = strings.Join([]string{
+			string(BASE_PATH),
+			string(LISTEN_KEY),
+		}, "/")
+	} else {
+		bub.Path = strings.Join([]string{
+			string(BASE_PATH),
+			string(LISTEN_KEY),
+		}, "/")
+		query := bub.Query()
+		query.Set("listenKey", *listenKey)
+	}
 	return bub
 }
 
